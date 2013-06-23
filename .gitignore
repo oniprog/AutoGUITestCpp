@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+*.suo
+*.opensdf
+
+boost_1_53_0
+*.sdf
+
