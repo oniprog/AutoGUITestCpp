@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AutoGUITestCpp", "AutoGUITestCpp.vcxproj", "{42F799E6-C1BA-4DD7-9C9E-382162D77F9D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleApp", "SampleApp\SampleApp.vcxproj", "{5B123175-0B13-4A93-8DFF-9FE5246A1662}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -15,6 +17,12 @@ Global
 		{42F799E6-C1BA-4DD7-9C9E-382162D77F9D}.Release|Win32.ActiveCfg = Release|Win32
 		{42F799E6-C1BA-4DD7-9C9E-382162D77F9D}.Release|Win32.Build.0 = Release|Win32
 		{42F799E6-C1BA-4DD7-9C9E-382162D77F9D}.Release|Win32.Deploy.0 = Release|Win32
+		{5B123175-0B13-4A93-8DFF-9FE5246A1662}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5B123175-0B13-4A93-8DFF-9FE5246A1662}.Debug|Win32.Build.0 = Debug|Win32
+		{5B123175-0B13-4A93-8DFF-9FE5246A1662}.Debug|Win32.Deploy.0 = Debug|Win32
+		{5B123175-0B13-4A93-8DFF-9FE5246A1662}.Release|Win32.ActiveCfg = Release|Win32
+		{5B123175-0B13-4A93-8DFF-9FE5246A1662}.Release|Win32.Build.0 = Release|Win32
+		{5B123175-0B13-4A93-8DFF-9FE5246A1662}.Release|Win32.Deploy.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

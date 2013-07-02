@@ -14,6 +14,23 @@
 *.suo
 *.opensdf
 
+lpng162
+!lpng162/readme.md
 boost_1_53_0
+!boost_1_53_0/readme.md
 *.sdf
+
+memo.txt
+
+Debug
+Release
+ipch
+!lib/debug
+
+zlib-1.2.5
+!zlib-1.2.5/readme.md
+*.aps
+
+Results
+
 
