@@ -59,6 +59,7 @@ private:
 
     CString     m_strApplicationPath;
     CString     m_strTestFolder;
+    DWORD       m_nKillTime;
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -77,9 +78,11 @@ void AutoGUITest::Run() {
 
         bLoop = filefind.FindNextFile();
 
+        // ディレクトリのみ処理する
         if( !filefind.IsDirectory() )
             continue;
 
+        // "."と".."フォルダは無視する
         CString strFileName = filefind.GetFileName();
         if ( filefind.GetFileName() == _T(".") || filefind.GetFileName() == _T(".."))
             continue;
@@ -107,8 +110,9 @@ void AutoGUITest::Run() {
             continue;
         }
 
+
         CloseHandle(pi.hThread);
-        if ( WaitForSingleObject(pi.hProcess, 10*1000 ) == WAIT_TIMEOUT ) {
+        if ( WaitForSingleObject(pi.hProcess, m_nKillTime ) == WAIT_TIMEOUT ) {
             TerminateProcess( pi.hProcess, 0 );
         }
 
@@ -132,6 +136,7 @@ bool AutoGUITest::LoadConfig() {
 
     m_strApplicationPath = CString(p.get<std::string>("ApplicationPath").c_str());
     m_strTestFolder = CString(p.get<std::string>("TestFolder").c_str());
+    m_nKillTime = p.get<DWORD>("KillTime");
 
     return true;    
 }

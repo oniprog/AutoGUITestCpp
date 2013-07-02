@@ -1,0 +1,5 @@
+{
+	"ApplicationPath" : "..\\..\\..\\Debug\\SampleApp.exe",
+	"TestFolder" : "..\\TestFolder",
+	"KillTime" : 10000
+}
