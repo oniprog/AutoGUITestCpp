@@ -30,4 +30,5 @@
 
 
 
-// TODO: プログラムに必要な追加ヘッダーをここで参照してください。
+#pragma warning(disable : 4819 )
+#pragma warning(disable : 4996 )
