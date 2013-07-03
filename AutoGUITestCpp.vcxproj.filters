@@ -22,12 +22,18 @@
     <ClInclude Include="targetver.h">
       <Filter>SourceFile</Filter>
     </ClInclude>
+    <ClInclude Include="AutoGUIHtmlWriter.h">
+      <Filter>SourceFile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AutoGUITestCpp.cpp">
       <Filter>SourceFile</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>SourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoGUIHtmlWriter.cpp">
       <Filter>SourceFile</Filter>
     </ClCompile>
   </ItemGroup>

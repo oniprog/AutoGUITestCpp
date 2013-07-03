@@ -1,5 +1,6 @@
 {
 	"ApplicationPath" : "..\\..\\..\\Debug\\SampleApp.exe",
 	"TestFolder" : "..\\TestFolder",
+	"OutputHTML" : "result.html",
 	"KillTime" : 10000
 }
