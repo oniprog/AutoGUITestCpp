@@ -17,6 +17,8 @@
 #include <boost/gil/gil_all.hpp>
 #include <boost/gil/extension/io/png_io.hpp>
 
+#include <boost/asio.hpp>
+
 #include "AutoGUIHtmlWriter.h"
 
 #define RESULT_FOLDER "Results"
@@ -84,11 +86,14 @@ private:
 
     bool        LoadConfig();
 
+    void        RunInside();
+
     HTMLWriter  m_writer;
-    CString     m_strApplicationPath;
-    CString     m_strTestFolder;
-    CString     m_strOutputHTML;
-    DWORD       m_nKillTime;
+    CString     m_strApplicationPath;  // 実行するアプリのパス
+    CString     m_strTestFolder;        // 実行するテストがあるパス
+    CString     m_strOutputHTML;        // 出力するHTMLのパス
+    DWORD       m_nKillTime;            // 実行したアプリをKILLするまでの時間
+    int         m_nServerPort;          // サーバーポート．0以外のとき，そのポートでひたすら待つ
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -104,12 +109,47 @@ public:
         return ret;
     }
 };
+
 ////////////////////////////////////////////////////////////////////////////
 /// テスト実行
 void AutoGUITest::Run() {
 
     if ( !LoadConfig() )
         return;
+
+    if ( m_nServerPort <= 0 ) { 
+        // 一回だけ実行
+        RunInside();
+    }
+    else {
+        std::cout << "start as server : port[" << m_nServerPort << "] " << std::endl;
+
+        // サーバー化　複数回実行の例
+        boost::asio::io_service io_service;
+        try {
+            for (;;)
+            {
+                boost::asio::ip::tcp::acceptor acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), m_nServerPort));
+                boost::asio::ip::tcp::socket socket(io_service);
+                acceptor.accept(socket);
+                acceptor.close();
+
+                std::cout << "run one test" << std::endl;
+
+                RunInside();
+
+                std::cout << "finished." << std::endl;
+            }
+        }
+        catch (std::exception& e)
+        {
+            std::cerr << e.what() << std::endl;
+        }        
+    }
+}
+////////////////////////////////////////////////////////////////////////////
+/// テスト実行
+void AutoGUITest::RunInside() {
 
     SetCurrentDirectory( GetExeFolder() );
     SetCurrentDirectory( m_strTestFolder );
@@ -118,8 +158,7 @@ void AutoGUITest::Run() {
     m_writer.Open( m_strOutputHTML );  // 作れなくても無視する
     m_writer.OutputHeader();
 
-
-    //
+    // 
     CFileFind filefind;
     BOOL bLoop = filefind.FindFile( _T("*.*"));
     while(bLoop) {
@@ -237,7 +276,7 @@ void AutoGUITest::Run() {
 
     m_writer.OutputFooter();
 }
-
+  
 ////////////////////////////////////////////////////////////////////////////
 /// 設定を読み込む
 bool AutoGUITest::LoadConfig() {
@@ -251,6 +290,7 @@ bool AutoGUITest::LoadConfig() {
     m_strTestFolder = CString(p.get<std::string>("TestFolder").c_str());
     m_strOutputHTML = CString(p.get<std::string>("OutputHTML").c_str() );
     m_nKillTime = p.get<DWORD>("KillTime");
+    m_nServerPort = p.get<int>("ServerPort");
 
     return true;    
 }
