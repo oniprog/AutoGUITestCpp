@@ -2,6 +2,7 @@
 	"ApplicationPath" : "..\\..\\..\\Debug\\SampleApp.exe",
 	"TestFolder" : "..\\TestFolder",
 	"OutputHTML" : "result.html",
-	"KillTime" : 10000,
-	"ServerPort" : 10140
+	"ErrorValue" : 5,
+	"KillTime" : 30000,
+	"ServerPort" : 0
 }

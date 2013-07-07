@@ -82,13 +82,23 @@ void HTMLWriter::OutputTestFileHeader( const wchar_t *szTestFileName ) {
 }
 
 ////////////////////////////////////////////////////////////////////////////
+// エラー値を出力する
+void HTMLWriter::OutputErrorValue( int nErrorValue ) {
+
+    if ( !m_wfp )
+        return;
+
+    _ftprintf( m_wfp, _T("<P>Error Value %d</P>"), nErrorValue );
+}
+
+////////////////////////////////////////////////////////////////////////////
 /// 比較用の2つのイメージを追加する
 void HTMLWriter::AddCompareImage( const wchar_t *szPath, const wchar_t *szPath2 ) {
 
     if ( !m_wfp )
         return;
-    _ftprintf(m_wfp, _T("<IMG SRC=\"%s\" WIDTH=%d HEIGHT=%d>\n"), szPath, IMAGE_SIZE, IMAGE_SIZE );
-    _ftprintf(m_wfp, _T("<IMG SRC=\"%s\" WIDTH=%d HEIGHT=%d>\n"), szPath2, IMAGE_SIZE, IMAGE_SIZE );
+    _ftprintf(m_wfp, _T("<IMG SRC=\"%s\" WIDTH=%d>\n"), szPath, IMAGE_SIZE, IMAGE_SIZE );
+    _ftprintf(m_wfp, _T("<IMG SRC=\"%s\" WIDTH=%d>\n"), szPath2, IMAGE_SIZE, IMAGE_SIZE );
 }
 ////////////////////////////////////////////////////////////////////////////
 /// DIFFイメージを追加する
@@ -98,7 +108,7 @@ void HTMLWriter::AddDiffImage( const wchar_t *szDiffPath )
         return;
 
     _ftprintf(m_wfp, _T("<BR>"));
-    _ftprintf(m_wfp, _T("<IMG SRC=\"%s\" WIDTH=%d HEIGHT=%d>\n"), szDiffPath, IMAGE_SIZE, IMAGE_SIZE );
+    _ftprintf(m_wfp, _T("<IMG SRC=\"%s\" WIDTH=%d>\n"), szDiffPath, IMAGE_SIZE, IMAGE_SIZE );
     _ftprintf(m_wfp, _T("<BR>"));
 }
 

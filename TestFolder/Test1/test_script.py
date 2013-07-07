@@ -1,10 +1,24 @@
 ﻿#coding : UTF-8
-UT_ShowMessage(u"きゃー，はずかしいわん")
-UT_Sleep(3)
+
+UT_SetChekcBox(0)
+UT_Sleep(1)
 UT_CaptureScreen(u"test1.png")
-UT_ShowWindow(False)
-UT_Sleep(3)
-UT_ShowWindow(True)
-UT_ShowMessage(u"ぶひー")
+
+UT_SetRadio(1)
+UT_Sleep(1)
 UT_CaptureScreen(u"test2.png")
+
+UT_SetEditBox(u"test 2")
+UT_Sleep(1)
+UT_CaptureScreen(u"test3.png")
+
+UT_SetComboBox(1)
+UT_Sleep(1)
+UT_CaptureScreen(u"test4.png")
+
+UT_SetPicture(1)
+UT_Sleep(1)
+UT_CaptureScreen(u"test5.png")
+
+UT_Sleep(5)
 UT_Terminate()

@@ -94,6 +94,7 @@ private:
     CString     m_strOutputHTML;        // 出力するHTMLのパス
     DWORD       m_nKillTime;            // 実行したアプリをKILLするまでの時間
     int         m_nServerPort;          // サーバーポート．0以外のとき，そのポートでひたすら待つ
+    int         m_nErrorValue;          // この値以上のエラーが出たら報告する
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -229,8 +230,6 @@ void AutoGUITest::RunInside() {
             CStringA strCorrectPath = CStringA(CORRECT_FOLDER) + "\\" + strPngFileName; 
             CStringA strDiffPath = CStringA(DIFF_FOLDER) + "\\" + strPngFileName;
 
-            m_writer.OutputTestFileHeader( CStringW(strPngFileName) );
-
             boost::gil::rgb8_image_t img;
             png_read_image( strPngPath, img );
 
@@ -246,6 +245,8 @@ void AutoGUITest::RunInside() {
                 if ( img.dimensions() != img2.dimensions() ) {
 
                     // 画像サイズが異なる
+                    m_writer.OutputTestFileHeader( CStringW(strPngFileName) );
+
                     m_writer.OutputImageSizeDiffrentError();
                     m_writer.AddCompareImage( strTestName + _T("\\") + CStringW(strCorrectPath), strTestName + _T("\\") + CStringW(strPngPath) );
                 }
@@ -255,10 +256,18 @@ void AutoGUITest::RunInside() {
                     boost::gil::rgb8_image_t img_diff(img.dimensions());
                     transform_pixels( const_view(img), const_view(img2), view(img_diff), transform_xor() );
 
-                    png_write_view(strDiffPath, boost::gil::flipped_up_down_view( const_view(img_diff) ) );
+                    png_write_view(strDiffPath, const_view(img_diff) );
 
-                    m_writer.AddCompareImage( strTestName + _T("\\") + CStringW(strCorrectPath), strTestName + _T("\\") + CStringW(strPngPath) );
-                    m_writer.AddDiffImage( strTestName + _T("\\") + CStringW(strDiffPath) );
+                    // 0以外の場所の数を数える
+                    int nErrorCnt = std::count_if( const_view(img_diff).begin(), const_view(img_diff).end(), [](boost::gil::rgb8c_pixel_t pD) { return pD[0]!=0 || pD[1]!=0 || pD[2]!=0; } );
+
+                    if ( nErrorCnt > m_nErrorValue ) {
+                        m_writer.OutputTestFileHeader( CStringW(strPngFileName) );
+
+                        m_writer.OutputErrorValue( nErrorCnt );
+                        m_writer.AddCompareImage( strTestName + _T("\\") + CStringW(strCorrectPath), strTestName + _T("\\") + CStringW(strPngPath) );
+                        m_writer.AddDiffImage( strTestName + _T("\\") + CStringW(strDiffPath) );
+                    }
                 }
             }
             else {
@@ -291,6 +300,7 @@ bool AutoGUITest::LoadConfig() {
     m_strOutputHTML = CString(p.get<std::string>("OutputHTML").c_str() );
     m_nKillTime = p.get<DWORD>("KillTime");
     m_nServerPort = p.get<int>("ServerPort");
+    m_nErrorValue = p.get<int>("ErrorValue");
 
     return true;    
 }

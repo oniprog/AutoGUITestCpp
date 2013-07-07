@@ -23,7 +23,7 @@
 
 // アプリケーションのバージョン情報に使われる CAboutDlg ダイアログ
 
-class CAboutDlg : public CDialogEx
+class CAboutDlg : public CDialog
 {
 public:
 	CAboutDlg();
@@ -39,16 +39,16 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
+CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 {
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+	CDialog::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
 
@@ -57,18 +57,25 @@ END_MESSAGE_MAP()
 
 
 CSampleAppDlg::CSampleAppDlg(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CSampleAppDlg::IDD, pParent)
+	: CDialog(CSampleAppDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 void CSampleAppDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CDialogEx::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_STA_1, m_STA_1);
+    DDX_Control(pDX, IDC_CHECK1, m_CHK_1);
+    DDX_Control(pDX, IDC_RADIO1, m_RAD_1);
+    DDX_Control(pDX, IDC_RADIO2, m_RAD_2);
+    DDX_Control(pDX, IDC_RADIO3, m_RAD_3);
+    DDX_Control(pDX, IDC_STA_2, m_PIC_1);
+    DDX_Control(pDX, IDC_COMBO1, m_CMB_1);
+    DDX_Control(pDX, IDC_EDIT1, m_EDIT_1);
 }
 
-BEGIN_MESSAGE_MAP(CSampleAppDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CSampleAppDlg, CDialog)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
@@ -81,7 +88,7 @@ END_MESSAGE_MAP()
 
 BOOL CSampleAppDlg::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
+	CDialog::OnInitDialog();
 
 	// "バージョン情報..." メニューをシステム メニューに追加します。
 
@@ -109,8 +116,10 @@ BOOL CSampleAppDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 小さいアイコンの設定
 
 	// TODO: 初期化をここに追加します。
+    m_CMB_1.AddString(_T("猫"));
+    m_CMB_1.AddString(_T("犬"));
 
-	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
+    return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
 
 void CSampleAppDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -122,7 +131,7 @@ void CSampleAppDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 	else
 	{
-		CDialogEx::OnSysCommand(nID, lParam);
+		CDialog::OnSysCommand(nID, lParam);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -221,7 +230,71 @@ void CPY_ShowMessage( const std::wstring &mes) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+/// チェックボックスを制御
+void CPY_SetChekcBox( bool bSet ) {
 
+    auto pDlg = GetMainDlg();
+    pDlg->m_CHK_1.SetCheck( bSet ? BST_CHECKED : BST_UNCHECKED );
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+/// ラジオボタンを制御
+void CPY_SetRadio( int nSel ) {
+
+    auto pDlg = GetMainDlg();
+    pDlg->m_RAD_1.SetCheck( nSel == 0 ? BST_CHECKED : BST_UNCHECKED );
+    pDlg->m_RAD_2.SetCheck( nSel == 1 ? BST_CHECKED : BST_UNCHECKED );
+    pDlg->m_RAD_3.SetCheck( nSel == 2 ? BST_CHECKED : BST_UNCHECKED );
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+/// エディットボックスの制御
+void CPY_SetEditBox( const std::wstring &mes ) {
+
+    auto pDlg = GetMainDlg();
+    pDlg->m_EDIT_1.SetWindowText( mes.c_str() );
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+/// コンボボックスの制御
+void CPY_SetComboBox( int nInd ) {
+
+    auto pDlg = GetMainDlg();
+    pDlg->m_CMB_1.SetCurSel( nInd );
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+/// 表示設定
+void CPY_SetPicture( int nInd ) {
+
+    auto pDlg = GetMainDlg();
+    CRect rectDraw;
+    pDlg->m_PIC_1.GetWindowRect( &rectDraw );
+    pDlg->ScreenToClient( &rectDraw );
+
+    CClientDC dc( pDlg );
+
+    dc.FillRect( &rectDraw, &CBrush(RGB(0,0,0)));
+
+    CPen pen1( PS_SOLID, 1, RGB(0xff,0xff,0xff));
+    auto pOldPen = dc.SelectObject( &pen1 );
+
+    if ( nInd == 0 ) {
+
+        dc.MoveTo( rectDraw.left, rectDraw.top );
+        dc.LineTo(rectDraw.right, rectDraw.bottom);
+        dc.MoveTo( rectDraw.right, rectDraw.top );
+        dc.LineTo(rectDraw.left, rectDraw.bottom);
+    }
+    else {
+
+        dc.Ellipse(rectDraw.left, rectDraw.top, rectDraw.right, rectDraw.bottom );
+    }
+
+    dc.SelectObject( pOldPen );
+}
+
+///////////////////////////////////////////////////////////////////////////////////
 // ダイアログに最小化ボタンを追加する場合、アイコンを描画するための
 //  下のコードが必要です。ドキュメント/ビュー モデルを使う MFC アプリケーションの場合、
 //  これは、Framework によって自動的に設定されます。
@@ -268,6 +341,12 @@ void CSampleAppDlg::OnPaint()
             main_namespace["UT_CaptureScreen"] = &CPY_CaptureScreen;
             main_namespace["UT_Terminate"]  = &CPY_Terminate;
 
+            main_namespace["UT_SetChekcBox"]  = &CPY_SetChekcBox;
+            main_namespace["UT_SetRadio"]  = &CPY_SetRadio;
+            main_namespace["UT_SetEditBox"]  = &CPY_SetEditBox;
+            main_namespace["UT_SetComboBox"]  = &CPY_SetComboBox;
+            main_namespace["UT_SetPicture"]  = &CPY_SetPicture;
+
             // Python のコードを実行
             try {
                 boost::python::exec_file( 
@@ -303,7 +382,7 @@ void CSampleAppDlg::OnPaint()
         }
 
 
-        CDialogEx::OnPaint();
+        CDialog::OnPaint();
     }
 }
 
@@ -317,17 +396,18 @@ HCURSOR CSampleAppDlg::OnQueryDragIcon()
 
 BOOL CSampleAppDlg::OnEraseBkgnd(CDC* pDC)
 {
-    auto nRet = CDialogEx::OnEraseBkgnd(pDC);
+    auto nRet = CDialog::OnEraseBkgnd(pDC);
     return nRet;
 }
 
 
 HBRUSH CSampleAppDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-//    HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+    HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+    return hbr;
     // 背景色を乱数で変える
-    static CBrush brash;
-    brash.CreateSolidBrush(rand() & 0xffffff );
+//    static CBrush brash;
+//    brash.CreateSolidBrush(rand() & 0xffffff );
 
-    return static_cast<HBRUSH>( brash.Detach() );
+//    return static_cast<HBRUSH>( brash.Detach() );
 }
