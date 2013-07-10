@@ -21,7 +21,7 @@
 
 #include "AutoGUIHtmlWriter.h"
 
-#define RESULT_FOLDER "Results"
+#define RESULT_FOLDER "Result"
 #define CORRECT_FOLDER "Correct"
 #define DIFF_FOLDER "Diff"
 
