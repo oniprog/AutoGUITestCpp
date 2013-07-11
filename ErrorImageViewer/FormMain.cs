@@ -68,6 +68,16 @@ namespace ErrorImageViewer
 
         private double CalcErrorValueFromAllFiles(out Bitmap imgFinalDiff, out Bitmap imgResult, out Bitmap imgCorrect)
         {
+            // コメントがあれば読む
+            String strCommentPath = mFolderList[mIndex].FullName + @"\readme.txt";
+            if (File.Exists(strCommentPath))
+            {
+                using (var rs = new StreamReader(strCommentPath, Encoding.UTF8))
+                {
+                    AddLog(rs.ReadLine());
+                }
+            }
+
             mStrResultImagePath = null;
             imgResult = imgCorrect = imgFinalDiff = new Bitmap(1,1);
 
@@ -87,8 +97,10 @@ namespace ErrorImageViewer
 
             mStrCorrectFolder = strCompFolder;
 
+            // 
             if (Directory.Exists(strCompFolder))
             {
+                // 比較フォルダがあるとき
                 Bitmap imgCur = new Bitmap(CreateImage(strResultImagePath));
 
                 var files = new DirectoryInfo(strCompFolder);
@@ -115,6 +127,7 @@ namespace ErrorImageViewer
             }
             else
             {
+                // 比較フォルダがないので初期ファイルを用意する
                 AddLog(strCompFolder + "を作成して初期ファイルを置きました");
                 Directory.CreateDirectory(strCompFolder);
                 File.Move( strResultImagePath, strCompFolder + @"\" + strFileTitle + @".png");
@@ -245,6 +258,9 @@ namespace ErrorImageViewer
 
         private void btnNewImgSeries_Click(object sender, EventArgs e)
         {
+            if (mStrCorrectFolder == null)
+                return;
+
             // 新しい画像シリーズ
             // 既存の画像を削除して，フォルダにコピーする
             Directory.Delete(mStrCorrectFolder, true);

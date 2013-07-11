@@ -51,9 +51,9 @@
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureBox1.Location = new System.Drawing.Point(13, 13);
+            this.pictureBox1.Location = new System.Drawing.Point(13, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(320, 308);
+            this.pictureBox1.Size = new System.Drawing.Size(372, 309);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -63,9 +63,9 @@
             this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.Location = new System.Drawing.Point(339, 12);
+            this.pictureBox2.Location = new System.Drawing.Point(391, 12);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(320, 309);
+            this.pictureBox2.Size = new System.Drawing.Size(400, 309);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
@@ -74,9 +74,9 @@
             // 
             this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox3.Location = new System.Drawing.Point(665, 12);
+            this.pictureBox3.Location = new System.Drawing.Point(797, 12);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(320, 309);
+            this.pictureBox3.Size = new System.Drawing.Size(374, 309);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox3.TabIndex = 2;
             this.pictureBox3.TabStop = false;
@@ -84,7 +84,7 @@
             // btnErrorImg
             // 
             this.btnErrorImg.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnErrorImg.Location = new System.Drawing.Point(409, 418);
+            this.btnErrorImg.Location = new System.Drawing.Point(621, 418);
             this.btnErrorImg.Name = "btnErrorImg";
             this.btnErrorImg.Size = new System.Drawing.Size(194, 73);
             this.btnErrorImg.TabIndex = 5;
@@ -95,7 +95,7 @@
             // btnOKImg
             // 
             this.btnOKImg.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnOKImg.Location = new System.Drawing.Point(221, 418);
+            this.btnOKImg.Location = new System.Drawing.Point(409, 418);
             this.btnOKImg.Name = "btnOKImg";
             this.btnOKImg.Size = new System.Drawing.Size(182, 73);
             this.btnOKImg.TabIndex = 6;
@@ -110,9 +110,9 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtErrorValue);
-            this.groupBox1.Location = new System.Drawing.Point(13, 416);
+            this.groupBox1.Location = new System.Drawing.Point(13, 421);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(191, 70);
+            this.groupBox1.Size = new System.Drawing.Size(191, 68);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             // 
@@ -153,7 +153,7 @@
             // btnGoBack
             // 
             this.btnGoBack.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnGoBack.Location = new System.Drawing.Point(854, 420);
+            this.btnGoBack.Location = new System.Drawing.Point(1052, 420);
             this.btnGoBack.Name = "btnGoBack";
             this.btnGoBack.Size = new System.Drawing.Size(113, 69);
             this.btnGoBack.TabIndex = 4;
@@ -169,13 +169,13 @@
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtLog.Size = new System.Drawing.Size(966, 81);
+            this.txtLog.Size = new System.Drawing.Size(1152, 81);
             this.txtLog.TabIndex = 9;
             // 
             // btnNewImgSeries
             // 
             this.btnNewImgSeries.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btnNewImgSeries.Location = new System.Drawing.Point(609, 420);
+            this.btnNewImgSeries.Location = new System.Drawing.Point(852, 418);
             this.btnNewImgSeries.Name = "btnNewImgSeries";
             this.btnNewImgSeries.Size = new System.Drawing.Size(194, 73);
             this.btnNewImgSeries.TabIndex = 10;
@@ -187,7 +187,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(991, 498);
+            this.ClientSize = new System.Drawing.Size(1177, 498);
             this.Controls.Add(this.btnNewImgSeries);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.groupBox1);
