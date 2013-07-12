@@ -95,6 +95,8 @@ private:
     DWORD       m_nKillTime;            // 実行したアプリをKILLするまでの時間
     int         m_nServerPort;          // サーバーポート．0以外のとき，そのポートでひたすら待つ
     int         m_nErrorValue;          // この値以上のエラーが出たら報告する
+    CString     m_strRunScriptName;    // 実行するスクリプト名
+    CString     m_strRunArgument;      // 実行するときの引数
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -188,7 +190,7 @@ void AutoGUITest::RunInside() {
         GetCurrentDirectory(MAX_PATH, szPushFolder);
 
         // Pythonスクリプトをコピーする
-        CopyFile( _T("test_script.py"), _T(RESULT_FOLDER) _T("\\test_script.py"), FALSE/*上書き*/ );
+        CopyFile( m_strRunScriptName, _T(RESULT_FOLDER) + CString(_T("\\")) + m_strRunScriptName, FALSE/*上書き*/ );
 
         // カレントフォルダを変える
         SetCurrentDirectory( _T(RESULT_FOLDER) );
@@ -196,7 +198,7 @@ void AutoGUITest::RunInside() {
         // アプリを実行する
         STARTUPINFO si = { sizeof(STARTUPINFO) };
         PROCESS_INFORMATION pi = {};
-        if (!CreateProcess( NULL, m_strApplicationPath.GetBuffer(), NULL, NULL, FALSE, NULL, NULL, NULL, &si, &pi ) ) {  
+        if (!CreateProcess( m_strApplicationPath.GetBuffer(), CString(_T("\"") + m_strApplicationPath  + _T("\" ") + m_strRunArgument).GetBuffer(), NULL, NULL, FALSE, NULL, NULL, NULL, &si, &pi ) ) {  
 
             AfxMessageBox(_T("アプリが実行できませんでした"));
             continue;
@@ -301,6 +303,8 @@ bool AutoGUITest::LoadConfig() {
     m_nKillTime = p.get<DWORD>("KillTime");
     m_nServerPort = p.get<int>("ServerPort");
     m_nErrorValue = p.get<int>("ErrorValue");
+    m_strRunScriptName = CString(p.get<std::string>("RunScriptName").c_str() );
+    m_strRunArgument = CString(p.get<std::string>("RunArgument").c_str());
 
     return true;    
 }

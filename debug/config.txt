@@ -4,5 +4,7 @@
 	"OutputHTML" : "result.html",
 	"ErrorValue" : 5,
 	"KillTime" : 30000,
-	"ServerPort" : 0
+	"ServerPort" : 0,
+	"RunScriptName" : "test_script.py",
+	"RunArgument" : "-test"
 }
