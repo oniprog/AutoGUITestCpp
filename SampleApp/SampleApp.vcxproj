@@ -54,7 +54,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.;..\boost_1_53_0;C:\Python27\include;..\lpng162</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\boost_1_53_0;C:\Python27\include;..\lpng162;..</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,6 +105,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\TestLibrary\TestLibrary.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SampleApp.h" />
     <ClInclude Include="SampleAppDlg.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\TestLibrary\TestLibrary.cpp" />
     <ClCompile Include="SampleApp.cpp" />
     <ClCompile Include="SampleAppDlg.cpp" />
     <ClCompile Include="stdafx.cpp">

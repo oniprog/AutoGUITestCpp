@@ -16,6 +16,8 @@
 #include <boost/gil/gil_all.hpp>
 #include <boost/gil/extension/io/png_io.hpp>
 
+#include "TestLibrary/TestLibrary.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -143,74 +145,9 @@ CSampleAppDlg *GetMainDlg() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-/// 画面をキャプチャする
 void CPY_CaptureScreen(const std::wstring &szFilePath) {
 
-    auto pDlg = GetMainDlg();
-
-    CRect rectClient;
-    pDlg->GetClientRect( &rectClient );
-
-    CClientDC dc(pDlg);
-
-    CDC dc2;
-    dc2.CreateCompatibleDC( &dc );
-
-    CBitmap bitmap;
-    bitmap.CreateCompatibleBitmap(&dc, rectClient.Width(), rectClient.Height() );
-    
-    auto pOldBitmap = dc2.SelectObject( &bitmap );
-
-    dc2.BitBlt(0,0, rectClient.Width(), rectClient.Height(), &dc, 0, 0, SRCCOPY );
-
-    int nWidthAdjust = rectClient.Width();
-    if ( nWidthAdjust % 4 ) { nWidthAdjust += 4 - nWidthAdjust % 4;}
-
-    std::vector<BYTE> bitdata( nWidthAdjust * rectClient.Height() * 3 );
-    
-    dc2.SelectObject( pOldBitmap );
-
-    BITMAPINFO bitmapinfo;
-    ZeroMemory(&bitmapinfo, sizeof(BITMAPINFO) );
-    bitmapinfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-    bitmapinfo.bmiHeader.biWidth = nWidthAdjust;
-    bitmapinfo.bmiHeader.biHeight = rectClient.Height();
-    bitmapinfo.bmiHeader.biPlanes = 1;
-    bitmapinfo.bmiHeader.biBitCount = 24;
-    bitmapinfo.bmiHeader.biCompression = BI_RGB;
-    GetDIBits( dc2, bitmap, 0, rectClient.Height(), bitdata.data(), &bitmapinfo, DIB_RGB_COLORS );
-
-
-    boost::gil::rgb8_image_t img( nWidthAdjust, rectClient.Height() );
-    copy_pixels(boost::gil::interleaved_view(nWidthAdjust, rectClient.Height(), (const boost::gil::rgb8_pixel_t*)bitdata.data(), nWidthAdjust*3), view(img));
-    png_write_view(CStringA(szFilePath.c_str()), boost::gil::flipped_up_down_view( const_view(img) ) );
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-/// プログラムを終了する
-void CPY_Terminate() {
-
-    GetMainDlg()->EndDialog(0);
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-/// Sleep関数　引数は1が1秒待ち
-void CPY_Sleep(double dTime) {
-
-    DWORD nWaitTime = static_cast<int>( dTime * 1000.0 );
-
-    DWORD nBeginTime = GetTickCount();
-
-    MSG msg;
-    while( GetTickCount() - nBeginTime < nWaitTime ) {
-     
-        Sleep(1);
-        while(::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE))
-        {
-            if (!AfxGetApp()->PumpMessage())
-                break;
-        }
-    }
+    AutoGuiTestSupport::CaptureScreen( GetMainDlg(), szFilePath );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -336,10 +273,10 @@ void CSampleAppDlg::OnPaint()
 
             // 関数をPythonに登録する
             main_namespace["UT_ShowWindow"] = &CPY_ShowWindow;
-            main_namespace["UT_Sleep"] = &CPY_Sleep;
+            main_namespace["UT_Sleep"] = &AutoGuiTestSupport::Sleep;
             main_namespace["UT_ShowMessage"] = &CPY_ShowMessage;
             main_namespace["UT_CaptureScreen"] = &CPY_CaptureScreen;
-            main_namespace["UT_Terminate"]  = &CPY_Terminate;
+            main_namespace["UT_Terminate"]  = &AutoGuiTestSupport::ExitProgramSDI;
 
             main_namespace["UT_SetChekcBox"]  = &CPY_SetChekcBox;
             main_namespace["UT_SetRadio"]  = &CPY_SetRadio;

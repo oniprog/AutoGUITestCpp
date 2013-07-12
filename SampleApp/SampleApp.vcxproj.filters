@@ -8,6 +8,9 @@
     <Filter Include="Source File">
       <UniqueIdentifier>{bfadc9ef-32f5-496d-b0e8-788c0383c569}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TestLibrary">
+      <UniqueIdentifier>{a1972558-77c3-47ad-ba0c-45874f5cd835}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -28,6 +31,9 @@
     <ClInclude Include="targetver.h">
       <Filter>Source File</Filter>
     </ClInclude>
+    <ClInclude Include="..\TestLibrary\TestLibrary.h">
+      <Filter>TestLibrary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SampleApp.cpp">
@@ -38,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TestLibrary\TestLibrary.cpp">
+      <Filter>TestLibrary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
