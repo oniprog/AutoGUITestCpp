@@ -25,12 +25,22 @@ namespace ErrorImageViewer
         private String mStrResultImagePath = null;
         private String mStrCorrectFolder = null;
 
+        private Rectangle mInitPic1, mInitPic2, mInitPic3, mInitAll;
+
         private void FormMain_Load(object sender, EventArgs e)
         {
             MessageBox.Show("直下にテストフォルダがある場所にExeを置いてください");
 
             // エラー値のディフォルトを設定する
             txtErrorValue.Text = ""+Properties.Settings.Default.ErrorValue;
+
+            // 拡大に備えて領域の大きさを取得する
+            mInitAll = ClientRectangle;
+            mInitPic1 = new Rectangle(pictureBox1.Left, pictureBox1.Top, pictureBox1.Width, pictureBox1.Height);
+            mInitPic2 = new Rectangle(pictureBox2.Left, pictureBox2.Top, pictureBox2.Width, pictureBox2.Height);
+            mInitPic3 = new Rectangle(pictureBox3.Left, pictureBox3.Top, pictureBox3.Width, pictureBox3.Height);
+
+            Show();
 
             GetFolderList();
             NextImage();
@@ -205,6 +215,7 @@ namespace ErrorImageViewer
 
         private void AddLog( String strMes ) {
             txtLog.Text = strMes + "\r\n" + txtLog.Text;
+            System.Windows.Forms.Application.DoEvents();
         }
 
         private void txtErrorValue_TextChanged(object sender, EventArgs e)
@@ -253,6 +264,7 @@ namespace ErrorImageViewer
             // 最初に戻る
             mIndex = -1;
             mSubIndex = -1;
+            mSubFileList = null;
             NextImage();
         }
 
@@ -270,6 +282,24 @@ namespace ErrorImageViewer
             File.Move(mStrResultImagePath, mStrCorrectFolder + @"\" + strMoveFileName + "." + (""+0)+".png");
 
             NextImage();
+        }
+
+        private void FormMain_Resize(object sender, EventArgs e)
+        {
+            var curRect = ClientRectangle;
+            int nAddX = curRect.Width - mInitAll.Width;
+            int nAddY = curRect.Height - mInitAll.Height;
+
+            pictureBox1.Width = mInitPic1.Width + nAddX/2;
+            pictureBox1.Height = mInitPic1.Height + nAddY/2;
+
+            pictureBox3.Left = mInitPic3.Left + nAddX/2;
+            pictureBox3.Width = mInitPic3.Width + nAddX/2;
+            pictureBox3.Height = mInitPic3.Height + nAddY/2;
+
+            pictureBox2.Top = mInitPic2.Top + nAddY / 2;
+            pictureBox2.Width = mInitPic2.Width + nAddX/2;
+            pictureBox2.Height = mInitPic2.Height + nAddY/2;
         }
     }
 }
