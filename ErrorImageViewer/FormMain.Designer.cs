@@ -202,6 +202,7 @@
             this.Controls.Add(this.btnGoBack);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.pictureBox2);
+            this.MinimumSize = new System.Drawing.Size(940, 771);
             this.Name = "FormMain";
             this.Text = "エラーイメージチェッカ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
