@@ -294,8 +294,17 @@ bool AutoGUITest::LoadConfig() {
 
     CStringA strConfigPath( GetExeFolder() + _T("\\config.txt") );
 
-    boost::property_tree::ptree p;
-    read_json( std::string(strConfigPath), p );
+	boost::property_tree::ptree p;
+	try {
+
+		read_json( std::string(strConfigPath), p );
+	}
+	catch( std::exception & ) {
+		CString strError;
+		strError.Format(_T("%sの読み込みのときにエラーが発生しました"), CString(strConfigPath) );
+		AfxMessageBox(strError);
+		return false;
+	}
 
     m_strApplicationPath = CString(p.get<std::string>("ApplicationPath").c_str());
     m_strTestFolder = CString(p.get<std::string>("TestFolder").c_str());
