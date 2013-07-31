@@ -55,12 +55,12 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>boost_1_53_0;lpng162</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>boost_1_54_0;lpng162</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>boost_1_53_0\stage\lib;lib\debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>boost_1_54_0\stage\lib;lib\debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>libpng16.lib;zlib.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -72,14 +72,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>boost_1_53_0;lpng162</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>boost_1_54_0;lpng162</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>boost_1_53_0\stage\lib;lib\debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>boost_1_54_0\stage\lib;lib\debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>libpng16.lib;zlib.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
