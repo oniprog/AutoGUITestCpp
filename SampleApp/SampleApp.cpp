@@ -31,6 +31,23 @@ CSampleAppApp::CSampleAppApp()
 
 CSampleAppApp theApp;
 
+// コマンドライン解析クラス
+class CMyCommandLineInfo : public CCommandLineInfo{
+public:
+	CMyCommandLineInfo() : bTestFlag(false) {}
+	virtual void ParseParam(LPCTSTR, BOOL, BOOL);
+	bool		bTestFlag;
+};
+
+void CMyCommandLineInfo::ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL bLast )
+{
+	if ( bFlag ) {
+		if(_tcsicmp(lpszParam, _T("test")) == 0 )
+			bTestFlag = true;
+	}
+
+	return;
+}
 
 // CSampleAppApp 初期化
 
@@ -58,6 +75,10 @@ BOOL CSampleAppApp::InitInstance()
 	// MFC コントロールでテーマを有効にするために、"Windows ネイティブ" のビジュアル マネージャーをアクティブ化
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 
+	// コマンドライン解析
+	CMyCommandLineInfo cmdinfo;
+	theApp.ParseCommandLine(cmdinfo);
+
 	// 標準初期化
 	// これらの機能を使わずに最終的な実行可能ファイルの
 	// サイズを縮小したい場合は、以下から不要な初期化
@@ -68,6 +89,7 @@ BOOL CSampleAppApp::InitInstance()
 	SetRegistryKey(_T("SamleApp"));
 
 	CSampleAppDlg dlg;
+	CSampleAppDlg::SetTestFlag( cmdinfo.bTestFlag );	// テストフラグをセットする
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

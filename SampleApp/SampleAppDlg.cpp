@@ -56,6 +56,8 @@ END_MESSAGE_MAP()
 
 // CSampleAppDlg ダイアログ
 
+bool		CSampleAppDlg::m_bTestFlag;	
+
 
 
 CSampleAppDlg::CSampleAppDlg(CWnd* pParent /*=NULL*/)
@@ -264,63 +266,71 @@ void CSampleAppDlg::OnPaint()
         if ( bFirstFlag ) {
 
             bFirstFlag = false;
-
-            // Python インタプリタ初期化
-            Py_Initialize();
-
-            // グローバルの名前空間を取得
-            auto main_namespace = boost::python::import("__main__").attr("__dict__");
-
-            // 関数をPythonに登録する
-            main_namespace["UT_ShowWindow"] = &CPY_ShowWindow;
-            main_namespace["UT_Sleep"] = &AutoGuiTestSupport::Sleep;
-            main_namespace["UT_ShowMessage"] = &CPY_ShowMessage;
-            main_namespace["UT_CaptureScreen"] = &CPY_CaptureScreen;
-            main_namespace["UT_Terminate"]  = &AutoGuiTestSupport::ExitProgramSDI;
-
-            main_namespace["UT_SetChekcBox"]  = &CPY_SetChekcBox;
-            main_namespace["UT_SetRadio"]  = &CPY_SetRadio;
-            main_namespace["UT_SetEditBox"]  = &CPY_SetEditBox;
-            main_namespace["UT_SetComboBox"]  = &CPY_SetComboBox;
-            main_namespace["UT_SetPicture"]  = &CPY_SetPicture;
-
-            // Python のコードを実行
-            try {
-                boost::python::exec_file( 
-                    "test_script.py", main_namespace, main_namespace 
-                );
-            }
-            catch(boost::python::error_already_set const &)
-            {
-                // エラーを表示する
-                // http://stackoverflow.com/questions/1418015/how-to-get-python-exception-text
-                PyObject *ptype, *pvalue, *ptraceback;
-                PyErr_Fetch(&ptype, &pvalue, &ptraceback);
-
-                boost::python::handle<> hType(ptype);
-                boost::python::object extype(hType);
-                boost::python::handle<> hTraceback(ptraceback);
-                boost::python::object traceback(hTraceback);
-
-                // Extract error message
-                std::string strErrorMessage = boost::python::extract<std::string>(pvalue);
-
-                // Extract line number (top entry of call stack)
-                // if you want to extract another levels of call stack
-                // also process traceback.attr("tb_next") recurently
-                long lineno = boost::python::extract<long> (traceback.attr("tb_lineno"));
-                std::string filename = boost::python::extract<std::string>(traceback.attr("tb_frame").attr("f_code").attr("co_filename"));
-                std::string funcname = boost::python::extract<std::string>(traceback.attr("tb_frame").attr("f_code").attr("co_name"));
-
-                CStringA strError;
-                strError.Format( "%s %s %d %s", filename.c_str(), funcname.c_str(), lineno, strErrorMessage.c_str() );
-                AfxMessageBox( CString(strError) );
-            }   
+			
+			if ( m_bTestFlag ) {
+				RunTest();
+			}
         }
 
 
         CDialog::OnPaint();
     }
+}
+
+// テストを実行する
+void CSampleAppDlg::RunTest() {
+
+	// Python インタプリタ初期化
+	Py_Initialize();
+
+	// グローバルの名前空間を取得
+	auto main_namespace = boost::python::import("__main__").attr("__dict__");
+
+	// 関数をPythonに登録する
+	main_namespace["UT_ShowWindow"] = &CPY_ShowWindow;
+	main_namespace["UT_Sleep"] = &AutoGuiTestSupport::Sleep;
+	main_namespace["UT_ShowMessage"] = &CPY_ShowMessage;
+	main_namespace["UT_CaptureScreen"] = &CPY_CaptureScreen;
+	main_namespace["UT_Terminate"]  = &AutoGuiTestSupport::ExitProgramSDI;
+
+	main_namespace["UT_SetChekcBox"]  = &CPY_SetChekcBox;
+	main_namespace["UT_SetRadio"]  = &CPY_SetRadio;
+	main_namespace["UT_SetEditBox"]  = &CPY_SetEditBox;
+	main_namespace["UT_SetComboBox"]  = &CPY_SetComboBox;
+	main_namespace["UT_SetPicture"]  = &CPY_SetPicture;
+
+	// Python のコードを実行
+	try {
+		boost::python::exec_file( 
+			"test_script.py", main_namespace, main_namespace 
+			);
+	}
+	catch(boost::python::error_already_set const &)
+	{
+		// エラーを表示する
+		// http://stackoverflow.com/questions/1418015/how-to-get-python-exception-text
+		PyObject *ptype, *pvalue, *ptraceback;
+		PyErr_Fetch(&ptype, &pvalue, &ptraceback);
+
+		boost::python::handle<> hType(ptype);
+		boost::python::object extype(hType);
+		boost::python::handle<> hTraceback(ptraceback);
+		boost::python::object traceback(hTraceback);
+
+		// Extract error message
+		std::string strErrorMessage = boost::python::extract<std::string>(pvalue);
+
+		// Extract line number (top entry of call stack)
+		// if you want to extract another levels of call stack
+		// also process traceback.attr("tb_next") recurently
+		long lineno = boost::python::extract<long> (traceback.attr("tb_lineno"));
+		std::string filename = boost::python::extract<std::string>(traceback.attr("tb_frame").attr("f_code").attr("co_filename"));
+		std::string funcname = boost::python::extract<std::string>(traceback.attr("tb_frame").attr("f_code").attr("co_name"));
+
+		CStringA strError;
+		strError.Format( "%s %s %d %s", filename.c_str(), funcname.c_str(), lineno, strErrorMessage.c_str() );
+		AfxMessageBox( CString(strError) );
+	}   
 }
 
 // ユーザーが最小化したウィンドウをドラッグしているときに表示するカーソルを取得するために、

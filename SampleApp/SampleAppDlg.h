@@ -18,7 +18,15 @@ public:
 
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV サポート
-
+	
+private:
+	void	RunTest();
+public:
+	static void SetTestFlag( bool bFlag) {
+		m_bTestFlag = bFlag;
+	}
+private:
+	static bool		m_bTestFlag;		/// テストするかどうかのフラグ
 
 // 実装
 protected:
